@@ -33,8 +33,10 @@ public class StudentInfoController {
     @PostMapping("/save")
     @RequiresPermissions("student:studentInfo:add")
     public R save(StudentInfoDO studentInfoDO) {
-
-        return null;
+        if (studentInfoService.save(studentInfoDO) > 0) {
+            return R.ok();
+        }
+        return R.error();
     }
 
     /**
@@ -46,7 +48,7 @@ public class StudentInfoController {
     public PageUtils list(@RequestParam Map<String, Object> params) {
         Query query = new Query(params);
         List<StudentInfoDO> studentInfoDOList = studentInfoService.list(query);
-        return new PageUtils(studentInfoDOList, studentInfoDOList.size(), query.getCurrPage(),query.getPageSize());
+        return new PageUtils(studentInfoDOList, studentInfoService.count(query), query.getCurrPage(), query.getPageSize());
     }
 
 
@@ -58,8 +60,8 @@ public class StudentInfoController {
     @PostMapping("/update")
     @RequiresPermissions("student:studentInfo:edit")
     public R update(StudentInfoDO studentInfo) {
-
-        return null;
+        studentInfoService.update(studentInfo);
+        return R.ok();
     }
 
     /**
@@ -70,7 +72,10 @@ public class StudentInfoController {
     @ResponseBody
     @RequiresPermissions("student:studentInfo:remove")
     public R remove(Integer id) {
-        return null;
+        if (studentInfoService.remove(id) > 0) {
+            return R.ok();
+        }
+        return R.error();
     }
 
     /**
@@ -81,8 +86,10 @@ public class StudentInfoController {
     @ResponseBody
     @RequiresPermissions("student:studentInfo:batchRemove")
     public R remove(@RequestParam("ids[]") Integer[] ids) {
-
-        return null;
+        if (studentInfoService.batchRemove(ids) > 0) {
+            return R.ok();
+        }
+        return R.error();
     }
 
 
