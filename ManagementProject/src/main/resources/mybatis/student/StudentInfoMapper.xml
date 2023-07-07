@@ -2,8 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yizhi.student.dao.StudentInfoDao">
-	
-	
+
+    <sql id="StudentInfoColumns">
+        a.id,
+		a.student_id,
+		a.exam_id,
+		a.class_id,
+		a.student_name,
+		a.certify,
+		a.mail_address,
+		a.foreign_lanaguage
+    </sql>
+
+
+	<select id="list" resultType="com.yizhi.student.domain.StudentInfoDO">
+		select <include refid="StudentInfoColumns"/>
+		from s_student_info a
+		<where>
+			<if test="name != null and name !=''"> and a.student_name LIKE CONCAT('%',#{name},'%') </if>
+			<if test="tocollegeId != null and tocollegeId !=''"> and a.tocollege = #{tocollegeId}</if>
+			<if test="tomajorId != null and tomajorId !=''"> and a.tomajor = #{tomajorId}</if>
+			<if test="classId != null and classId !=''"> and a.class_id = #{classId}</if>
+		</where>
+    </select>
 
 
 </mapper>
